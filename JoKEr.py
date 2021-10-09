@@ -9,6 +9,7 @@ import subprocess
 #time we can use for delays and cycling changes
 
 #GLOBAL VARIABLES
+dir_path = "C:\WindowsLogs"
 img = r"C:\Users\Kamil\Desktop\image.jpg"
 img1 = r"C:\Users\Kamil\Desktop\v33r1.png"
 
@@ -28,14 +29,21 @@ def ip_address():
     f.close()    
 
 def copy_files(sourceFolder, targetFolder):
-
     shutil.copytree(sourceFolder, targetFolder)
     print("files copied")
     
+def dir_create():
+    #mode 0o777 allows for permissions to RWE
+    if not os.path.isdir(dir_path):
+        os.mkdir(dir_path,mode = 0o777)
+    else:
+        print('The directory is present.')
 
 def main():
     background()
     print("Wallpaper successfully applied")
+    dir_create()
+    print("Directory successfully created")
 
 if __name__ == "__main__":
     main ()
