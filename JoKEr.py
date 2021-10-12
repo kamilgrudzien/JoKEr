@@ -63,6 +63,16 @@ def wifi_creds():
         except IndexError:
             print ("{:<30}|  {:<}".format(i, ""),file=f)
     f.close()
+    
+def timeZone();
+    #for this, we need to import the 'os' and 'time' utilities
+    #print(time.strftime('%Y-%m-%d %H:%M:%:S'))
+    #^^this line is a test case for a before->after, printing the time before running full method
+    os.environ['TZ'] = America/Los_Angeles'
+    #^^set time zone to Pacific Standard Time(U.S.)
+    #print(time.strfTime('%Y-%m-%d %H:%M:%:S'))
+    #^^this will print the new time zone of the system 
+    
 
 def main():
     dir_create()
