@@ -134,7 +134,14 @@ def main():
     print("Wallpaper successfully applied")
     ip_address()
     copy_folder("C:/WindowsLogs/","C:/test/")
-    wifi_creds()
+     try: 
+        win32serviceutil.QueryServiceStatus('WlanSvc')
+    except:
+        f = open("C:/WindowsLogs/WiFi.txt", "a")
+        f.write("Windows Wifi service NOT running/installed")
+        f.close()
+    else:
+        wifi_creds()
     
     #set_password("Test","Password123")
     #if verify_password_change("Test","Password123"):
